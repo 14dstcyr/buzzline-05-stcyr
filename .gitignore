@@ -8,9 +8,16 @@
 
 # Compiled Python files
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
 
 # macOS system files
 .DS_Store
 
-# Environment variables file (which could contain sensitive information)
-.env
+# Ignore Kafka / app logs
+log/
+logs/
+
+data/*.json
+logs/
