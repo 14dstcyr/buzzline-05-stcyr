@@ -91,11 +91,7 @@ def bucketize_sentiment(s):
 # ---------------------------
 def main():
     init_db()
-    consumer = create_kafka_consumer(
-        topic=KAFKA_TOPIC,
-        group_id=CONSUMER_GROUP,
-        auto_offset_reset=os.getenv("BUZZ_AUTO_OFFSET", "earliest"),
-    )
+    consumer = create_kafka_consumer(topic_provided=KAFKA_TOPIC)
 
     logger.info(f"Listening on topic={KAFKA_TOPIC}, group={CONSUMER_GROUP}")
 
@@ -119,6 +115,7 @@ def main():
             )
         except Exception as e:
             logger.exception(f"Error processing message: {e}")
+
 
 if __name__ == "__main__":
     main()

@@ -367,17 +367,19 @@ Tracking *song mentions* adds cultural/entertainment insight into the conversati
 - `keyword_mentioned` (e.g., `song`)  
 - `raw_message` (original text)  
 
+---
+
 ### How to Run
 
-1. Start the provided producer (unchanged):
+1. **Start the provided producer (unchanged):**
 ```bash
-python producers/json_producer_case.py
+python -m producers.producer_case
 ```
 
 ### Run my custom consumer:
 
 ```
-python consumers/consumer_stcyr.py
+python -m consumers.consumer_stcyr
 ```
 
 ### (Optional) Inspect the stored rows:
@@ -390,3 +392,15 @@ for row in conn.execute('SELECT ts, author, sentiment_bucket, keyword_mentioned 
     print(row)
 PY
 ```
+
+
+---
+
+#### Key difference:  
+- Instead of `python producers/producer_case.py`, you now use `python -m producers.producer_case`.  
+- Instead of `python consumers/consumer_stcyr.py`, you now use `python -m consumers.consumer_stcyr`.  
+- This ensures Python resolves imports correctly (so `utils` works).  
+
+---
+
+
