@@ -344,3 +344,49 @@ See the [LICENSE](LICENSE.txt) file for more.
 - Ruff by Astral Software (Linter + Formatter)
 - **SQLite Viewer by Florian Klampfer**
 - WSL by Microsoft (on Windows Machines)
+
+---
+
+## Custom Consumer – Deb St. Cyr (`consumers/consumer_stcyr.py`)
+
+**What it does:**  
+Reads live JSON messages from a Kafka topic and derives a qualitative `sentiment_bucket` (positive / neutral / negative) from the numeric `sentiment` field.  
+It also tracks when a **song** is mentioned in the message.  
+
+**Why this insight matters:**  
+Teams often prefer quick, human-readable sentiment over raw floats. Buckets enable simple dashboards without losing numeric precision.  
+Tracking *song mentions* adds cultural/entertainment insight into the conversation stream.
+
+**Exactly what is stored PER MESSAGE:**  
+- `ts` (original timestamp)  
+- `author`  
+- `category`  
+- `sentiment` (original float)  
+- `sentiment_bucket` (derived)  
+- `message_length`  
+- `keyword_mentioned` (e.g., `song`)  
+- `raw_message` (original text)  
+
+### How to Run
+
+1. Start the provided producer (unchanged):
+```bash
+python producers/json_producer_case.py
+```
+
+### Run my custom consumer:
+
+```
+python consumers/consumer_stcyr.py
+```
+
+### (Optional) Inspect the stored rows:
+
+```
+python -q << 'PY'
+import sqlite3
+conn = sqlite3.connect('data/processed.db')
+for row in conn.execute('SELECT ts, author, sentiment_bucket, keyword_mentioned FROM processed_messages ORDER BY id DESC LIMIT 10;'):
+    print(row)
+PY
+```
